@@ -1,0 +1,13 @@
+[Unit]
+Description=Sync abf-downloads with distro.ibiblio.org
+ConditionPathExists=/home/abf-downloads
+ConditionPathIsReadWrite=/root/mirrors
+
+[Service]
+Type=simple
+WorkingDirectory=/root/mirrors
+ExecStart=/root/mirrors/rsync_ibiblio.sh
+User=root
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

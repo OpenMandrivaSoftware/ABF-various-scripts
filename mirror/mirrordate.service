@@ -1,0 +1,13 @@
+[Unit]
+Description=Updating /home/abf-downloads/TIME
+ConditionPathExists=/home/abf-downloads
+ConditionPathIsReadWrite=/home/abf-downloads
+
+[Service]
+Type=forking
+WorkingDirectory=/home/abf-downloads
+ExecStart=/bin/bash -c "/bin/date +%%s > /home/abf-downloads/TIME"
+User=root
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

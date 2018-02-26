@@ -1,0 +1,9 @@
+[Unit]
+Description=Sign OpenMandriva RPMS trigger
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=3m
+
+[Install]
+WantedBy=timers.target

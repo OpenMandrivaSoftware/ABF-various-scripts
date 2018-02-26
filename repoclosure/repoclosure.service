@@ -1,0 +1,9 @@
+[Unit]
+Description=Repoclosure report
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker run -d -v /home/omv/repoclosure:/repoclosure-report openmandriva/repoclosure
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

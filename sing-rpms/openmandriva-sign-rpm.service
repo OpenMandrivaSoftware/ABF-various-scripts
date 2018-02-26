@@ -1,0 +1,16 @@
+[Unit]
+Description=Sign OpenMandriva RPM files
+After=local-fs.target
+After=network.target
+ConditionPathIsReadWrite=/home/abf-downloads
+ConditionPathExists=/home/abf-downloads
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/abf-downloads
+SuccessExitStatus=255
+ExecStart=/opt/ABF/bin/sign_rpm.sh --repository=/home/abf-downloads
+User=root
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

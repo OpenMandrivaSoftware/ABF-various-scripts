@@ -1,0 +1,9 @@
+[Unit]
+Description=Updating /etc/motd
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/motd_hello_gen.sh
+Nice=19
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7

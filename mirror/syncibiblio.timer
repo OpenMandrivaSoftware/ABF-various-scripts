@@ -1,0 +1,9 @@
+[Unit]
+Description=rsync abf-downloads with distro.ibiblio.org
+
+[Timer]
+OnBootSec=15m
+OnCalendar=*-*-* 2/4:00:00
+
+[Install]
+WantedBy=timers.target

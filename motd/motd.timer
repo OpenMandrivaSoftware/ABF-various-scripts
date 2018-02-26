@@ -1,0 +1,9 @@
+[Unit]
+Description=Run motd.service every 10 minutes
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*:0/10
+
+[Install]
+WantedBy=timers.target

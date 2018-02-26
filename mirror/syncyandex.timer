@@ -1,0 +1,9 @@
+[Unit]
+Description=rsync abf-downloads with mirror.yandex.ru
+
+[Timer]
+OnBootSec=15m
+OnCalendar=*-*-* 0/4:00:00
+
+[Install]
+WantedBy=timers.target

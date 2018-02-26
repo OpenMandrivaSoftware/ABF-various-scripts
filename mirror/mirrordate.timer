@@ -1,0 +1,9 @@
+[Unit]
+Description=Update TIME file on abf-downloads
+
+[Timer]
+OnBootSec=5min
+OnCalendar=*:0/30
+
+[Install]
+WantedBy=timers.target
