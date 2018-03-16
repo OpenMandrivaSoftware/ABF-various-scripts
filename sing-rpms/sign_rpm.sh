@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Author: Tomasz Pawel Gajc tpgxyz@gmail.com 2015
 # GPL
 
@@ -6,6 +6,8 @@ if [ "$(id -u)" != '0' ]; then
     printf '%s\n' 'Can not run as non root user! Exiting'
     exit 1
 fi
+
+[ "$(pidof -o %PPID -x $(basename $0))" ] && printf '%s\n' "Signing rpm proces is currently running." && exit 1
 
 # use only allowed arguments
 if [ $# -ge 1 ]; then
@@ -34,10 +36,10 @@ GPG_PASS="$(echo SET_PASSWORD_HERE | tr 'A-Za-z' 'N-ZA-Mn-za-m')"
 
 sign_rpms() {
     REPOSITORY=$1
-    LAST_RPMS="$(dirname $0)"/LAST_RPMS.lst
+    LAST_RPMS="$(dirname "$0")/LAST_RPMS.lst"
 
 # /home/abf-downloads/cooker/repository/x86_64/main/release/
-    NEW_ARRAY=("$(find $REPOSITORY/{cooker,openmandriva*,3.0}/repository/{aarch64,armv7*,i*86,x86_64,SRPMS} -type f -name "*.rpm" -cmin -15 -printf '%h/%f\n' | sort -u)")
+    NEW_ARRAY=($(find $REPOSITORY/{cooker,openmandriva*,3.0}/repository/{aarch64,armv7*,i*86,x86_64,SRPMS} -type f -name "*.rpm" -cmin -15 -printf '%h/%f\n' | sort -u))
 
     if [ ${#NEW_ARRAY[@]} -gt 0 ]; then
         printf '%s\n' "New RPM files found: ${#NEW_ARRAY[@]}"
@@ -51,8 +53,8 @@ sign_rpms() {
 
         OLD="${OLD_ARRAY[*]}"
         for item in ${NEW_ARRAY[@]}; do
-            if ! [[ $OLD =~ "$item" ]]; then
-                RESULT+=($item)
+            if ! [[ $OLD =~ $item ]]; then
+                RESULT+=("$item")
             fi
         done
 
@@ -71,7 +73,7 @@ sign_rpms() {
     for i in ${RESULT[*]}; do
         has_key="$(rpm -Kv $i | grep 'key ID' | grep -ow ${KEYNAME,,})"
         if [ "${has_key}" != "${KEYNAME,,}" ] ; then
-            printf '%s\n' "--> Starting to sign '$i'"
+            printf '%s\n' "--> Starting to sign $i"
             chmod 0666 $i;
             echo "yes" | setsid rpm --define "_signature gpg" --define "_gpg_name ${KEYNAME}" --define "__gpg_check_password_cmd /bin/true" --define "__gpg_sign_cmd %{__gpg} gpg --batch --no-armor --passphrase '$GPG_PASS' --no-secmem-warning -u '%{_gpg_name}' --sign --detach-sign --output %{__signature_filename} %{__plaintext_filename}" --resign "$i" >/dev/null 2>&1;
             chmod 0644 "$i";
@@ -79,14 +81,14 @@ sign_rpms() {
 
         # Save exit code
         rc=$?
-        if [ "$rc" != '0' ] ; then
-            printf '%s\n' "--> RPM file '$i' has not been signed successfully!"
+        if [ "${rc}" != '0' ]; then
+            printf '%s\n' "--> RPM file $i has not been signed successfully!"
             exit 255
         fi
     done
 
-    printf '%s\n' "${RESULT[@]}" > $LAST_RPMS
+    printf '%s\n' "${RESULT[@]}" > "${LAST_RPMS}"
 }
 
 
-sign_rpms ${REPOSITORY}
+sign_rpms "${REPOSITORY}"
