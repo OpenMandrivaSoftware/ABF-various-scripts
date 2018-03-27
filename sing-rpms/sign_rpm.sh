@@ -42,7 +42,7 @@ sign_rpms() {
     LAST_RPMS="$(dirname "$0")/LAST_RPMS.lst"
 
 # /home/abf-downloads/cooker/repository/x86_64/main/release/
-    NEW_ARRAY=($(find $REPOSITORY/{cooker,openmandriva*,3.0}/repository -type f -name "*.rpm" -cmin -1500 -printf '%h/%f\n' | sort -u))
+    NEW_ARRAY=($(find $REPOSITORY/{cooker,openmandriva*,3.0}/repository -type f -name "*.rpm" -cmin -15 -printf '%h/%f\n' | sort -u))
     if [ ${#NEW_ARRAY[@]} -gt 0 ]; then
 	printf '%s\n'  "New RPM files found: ${#NEW_ARRAY[@]}"
 	printf '%s\n'  "Checking old result..."
