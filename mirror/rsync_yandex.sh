@@ -17,7 +17,7 @@ MIRROR=rsync://pull-mirror.yandex.net/openmandriva-push/
 
 ########################################################################
 
-OPTS="-arvqH --delete --exclude-from=$FILTERS --files-from=$SYNC"
+OPTS="-arvqH --delete-after --delete-excluded --ignore-errors --exclude-from=$FILTERS --files-from=$SYNC"
 
 # the transfer
 printf '%s\n' "START:" > /root/mirrors/"$MIRNAME".log
