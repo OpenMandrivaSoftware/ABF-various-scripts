@@ -17,7 +17,7 @@ MIRROR=SET_LOGIN_HERE@login.ibiblio.org:openmandriva
 
 ########################################################################
 
-OPTS="-arvqH --delete --exclude-from=$FILTERS --files-from=$SYNC"
+OPTS="-arvqH --delete-after --delete-excluded --ignore-errors --exclude-from=$FILTERS --files-from=$SYNC"
 
 # the transfer
 printf '%s\n' "START:" > /root/mirrors/$MIRNAME.log
